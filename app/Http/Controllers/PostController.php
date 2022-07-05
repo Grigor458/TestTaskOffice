@@ -29,10 +29,11 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-        if ($request->file('image')) {
+
+        if ($request->file('postImage')) {
             //nkar@ pahvuma unique anunov storageum u amen posti id-ov papka
             $imageName = date('YmdHi').$request->file('postImage')->getClientOriginalName();
-            $request->file('postImage')->storeAs('public/images', $imageName);
+            $request->file('postImage')->storeAs('public/images/'.$request->categoryId, $imageName);
 
             Posts::create([
                 'title' => $request->title,
@@ -69,8 +70,7 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Posts::find($id);
-//        $tags = $post->tags;  vekal relationov
-//        return view('Posts.edit', compact('post', 'tags'));
+        return view('Posts.edit', compact('post'));
     }
 
     /**
@@ -80,7 +80,7 @@ class PostController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
         //VALIDACIA
         $post = Posts::find($id);
@@ -118,7 +118,7 @@ class PostController extends Controller
     public function getPostByTags($data)
     {
         $posts = Posts::whereHas('tags', function ($query) use ($data) {
-//            $query->where('title', 'like', '%' . $data . '%');
+            $query->where('title', $data);
 //            teg@ beruma konkret anunov, like petq chi
         })->get();
 

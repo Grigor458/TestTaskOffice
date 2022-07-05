@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryStoreRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,18 +18,11 @@ class CategoryController extends Controller
     public function index()
     {
         //Modelnera petq
-        return view('Category.index', [
-//            'categories' => DB::table('categories')->paginate(5)
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+        $categories = Category::paginate(5);
+//        return view('Category.index', [
+////            'categories' => DB::table('categories')->paginate(5)
+//        ]);
+        return view('Category.index')->with('categories', $categories);
     }
 
     /**
@@ -37,12 +31,8 @@ class CategoryController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request)
     {
-
-        $validated = $request->validate([
-            'title' => 'required|min:5',
-        ]);
         $category = Category::create([
             'title' => $request->title,
             'user_id' => Auth::user()->id,
@@ -79,7 +69,7 @@ class CategoryController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoryStoreRequest $request, $id)
     {
         $category = Category::find($id);
         $category->update([

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentStoreRequest;
 use App\Models\Comments;
 use App\Models\Posts;
 use Egulias\EmailValidator\Parser\Comment;
@@ -18,33 +19,23 @@ class CommentController extends Controller
     public function index()
     {
         $posts = Posts::all();
-        return view('Comments.index', [
-            'comments' => DB::table('comments')->paginate(5)
-        ], compact('posts'));
-    }
+        $comments = Comments::paginate(5);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        return view('Comments.index',compact('posts','comments'));
 
+//        return view('Comments.index', [
+//            'comments' => DB::table('comments')->paginate(5)
+//        ], compact('posts'));
+    }
     /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CommentStoreRequest $request)
     {
-        $validated = $request->validate([
-            'post_id' => 'required',
-            'description' => 'required',
-        ]);
+
         $comment = Comments::create([
             'post_id' => $request->postID,
             'description' => $request->description
@@ -82,7 +73,7 @@ class CommentController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CommentStoreRequest $request, $id)
     {
         $category = Comments::find($id);
         $category->update([
@@ -99,8 +90,7 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        $comment = Comments::find($id);
-        $comment->delete();
+        $comment = Comments::find($id)->delete();
         return 'success';
     }
 }

@@ -10,7 +10,7 @@
 
             @foreach($posts as $post)
                 <div class="card">
-                    <img class="card-img-top" src="{{asset('storage/images/' . $post->image) }}" alt="Card image cap">
+                    <img class="card-img-top" src="{{asset('storage/images/'.$post->category->id .'/' . $post->image) }}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">{{$post->title}}</h5>
                     </div>

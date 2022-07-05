@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TagStoreRequest;
 use App\Models\Posts;
 use App\Models\Tags;
 use Illuminate\Http\Request;
@@ -17,19 +18,11 @@ class TagController extends Controller
     public function index()
     {
         $posts = Posts::all();
-        return view('Tags.index', [
-            'tags' => DB::table('tags')->paginate(5)
-        ], compact('posts'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $tags=Tags::paginate(5);
+        return view('Tags.index', compact('posts', 'tags'));
+//        return view('Tags.index', [
+//            'tags' => DB::table('tags')->paginate(5)
+//        ], compact('posts'));
     }
 
     /**
@@ -38,12 +31,8 @@ class TagController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TagStoreRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|min:5',
-        ]);
-
         $tag = Tags::create([
             'post_id' => $request->postId,
             'title' => $request->title,
@@ -80,7 +69,7 @@ class TagController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TagStoreRequest $request, $id)
     {
         //
     }
@@ -94,8 +83,7 @@ class TagController extends Controller
     public function destroy($id)
     {
 
-        $tag = Tags::find($id);
-        $tag->delete();
+        $tag = Tags::find($id)->delete();
         return 'succes';
     }
 }

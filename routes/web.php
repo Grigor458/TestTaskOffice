@@ -19,12 +19,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $posts = Posts::withCount('tags', 'comments')->get();
-    return view('index', compact('posts'));
-//    ste senc ban chen grum
-});
-
+//Route::get('/', function () {
+//
+//    return view('index', compact('posts'));
+////    ste senc ban chen grum
+//});
+Route::get('/', [HomeController::class, 'homepage']);
 Route::middleware(['auth'])->group(function () {
     Route::resources([
         'category' => CategoryController::class,
@@ -38,8 +38,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 });
-
-
 
 
 Auth::routes();

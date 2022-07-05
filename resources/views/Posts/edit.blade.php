@@ -1,15 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{asset('storage/images/' . $post->image) }}" alt="Card image cap">
+        <img class="card-img-top" src="{{asset('storage/images/'.$post->category->id."/". $post->image) }}" alt="Card image cap">
         <div class="card-body">
             <h5 class="card-title"> {{$post->title}}</h5>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                 card's content.</p>
             <div>
-                @foreach($tags as $tag)
+                @foreach($post->tags as $tag)
                     <p>Tags-{{$tag->title}}</p>
                 @endforeach
             </div>

@@ -132,7 +132,7 @@
             @foreach($posts as $post)
                 <tr>
                     <td>{{$post->id}}</td>
-                    <td><img class="card-img-top" src="{{asset('storage/images/' . $post->image) }}"
+                    <td><img class="card-img-top" src="{{asset('storage/images/'.$post->category->id .'/'. $post->image) }}"
                              alt="Card image cap"
                              style="width: 50px;height: 50px;"></td>
                     <td>{{$post->category->title}}</td>
