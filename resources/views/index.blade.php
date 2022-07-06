@@ -20,7 +20,9 @@
                     <div class="card-footer">
                         <small class="text-muted">Created {{$post->created_at}}</small>
                     </div>
-                    <a href="{{route('post.show',$post->id)}}" class="btn btn-primary">Show Post</a>
+                    @if(\Illuminate\Support\Facades\Auth::user())
+                        <a href="{{route('post.show',$post->id)}}" class="btn btn-primary">Show Post</a>
+                    @endif
                 </div>
             @endforeach
 

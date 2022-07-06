@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RelpyStoreRequest;
 use App\Models\Comments;
 use App\Models\SubComments;
 use Illuminate\Http\Request;
@@ -36,12 +37,13 @@ class SubCommentsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RelpyStoreRequest $request)
     {
         SubComments::create([
             'comment_id' => $request->commentId,
             'description' => $request->description,
         ]);
+        return redirect()->back();
     }
 
     /**

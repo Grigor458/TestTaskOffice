@@ -26,8 +26,10 @@ class HomeController extends Controller
     {
         return view('home');
     }
-    public function homepage(){
+
+    public function homepage()
+    {
         $posts = Posts::withCount('tags', 'comments')->get();
-        return view('index',compact('posts'));
+        return view('index', compact('posts'));
     }
 }

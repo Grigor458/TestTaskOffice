@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Posts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -18,7 +19,7 @@ class PostController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $posts = Posts::withCount('tags')->get();
+        $posts = Posts::withCount('tags')->where('user_id', Auth::user()->id)->get();
         return view('Posts.index', compact('categories', 'posts'));
 
     }
@@ -31,9 +32,8 @@ class PostController extends Controller
     {
 
         if ($request->file('postImage')) {
-            //nkar@ pahvuma unique anunov storageum u amen posti id-ov papka
-            $imageName = date('YmdHi').$request->file('postImage')->getClientOriginalName();
-            $request->file('postImage')->storeAs('public/images/'.$request->categoryId, $imageName);
+            $imageName = date('YmdHi') . $request->file('postImage')->getClientOriginalName();
+            $request->file('postImage')->storeAs('public/images/' . $request->categoryId, $imageName);
 
             Posts::create([
                 'title' => $request->title,
@@ -56,7 +56,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Posts::findOrFail($id);
+        $post = Posts::withCount('tags','comments')->findOrFail($id);
 
         return view('postShow', compact('post'));
     }
@@ -82,6 +82,7 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
+        dd($request->all());
         //VALIDACIA
         $post = Posts::find($id);
 
@@ -109,8 +110,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Posts::find($id);
-        $post->delete();
+        $post = Posts::find($id)->delete();
         return redirect()->back();
     }
 
@@ -119,9 +119,18 @@ class PostController extends Controller
     {
         $posts = Posts::whereHas('tags', function ($query) use ($data) {
             $query->where('title', $data);
-//            teg@ beruma konkret anunov, like petq chi
         })->get();
 
         return response()->json($posts);
+    }
+
+
+    public function updatePostsCategory(Request $request)
+    {
+        $post = Posts::findOrFail($request->postId);
+        $post->update([
+            'category_id' => $request->categoryId
+        ]);
+        return 'success';
     }
 }

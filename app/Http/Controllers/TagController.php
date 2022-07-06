@@ -20,9 +20,7 @@ class TagController extends Controller
         $posts = Posts::all();
         $tags=Tags::paginate(5);
         return view('Tags.index', compact('posts', 'tags'));
-//        return view('Tags.index', [
-//            'tags' => DB::table('tags')->paginate(5)
-//        ], compact('posts'));
+
     }
 
     /**
@@ -82,7 +80,6 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-
         $tag = Tags::find($id)->delete();
         return 'succes';
     }
