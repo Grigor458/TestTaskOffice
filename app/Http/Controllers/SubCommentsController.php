@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CategoryStoreRequest;
-use App\Models\Category;
+use App\Models\Comments;
+use App\Models\SubComments;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
-class CategoryController extends Controller
+class SubCommentsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,12 +15,19 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //Modelnera petq
-        $categories = Category::paginate(5);
-//        return view('Category.index', [
-////            'categories' => DB::table('categories')->paginate(5)
-//        ]);
-        return view('Category.index')->with('categories', $categories);
+        $subComments = SubComments::paginate(5);
+        $comments = Comments::all();
+        return view('subComments.index', compact('subComments', 'comments'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -31,13 +36,12 @@ class CategoryController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryStoreRequest $request)
+    public function store(Request $request)
     {
-        $category = Category::create([
-            'title' => $request->title,
-            'user_id' => Auth::user()->id,
+        SubComments::create([
+            'comment_id' => $request->commentId,
+            'description' => $request->description,
         ]);
-        return redirect()->back();
     }
 
     /**
@@ -48,6 +52,8 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
+        $subComment = SubComments::findOrFail($id);
+        return view('subcomments.show', compact('subComment'));
     }
 
     /**
@@ -58,8 +64,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
-        return view('Category.edit', compact('category'));
+        //
     }
 
     /**
@@ -71,11 +76,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Category::find($id);
-        $category->update([
-            'title' => $request->title
-        ]);
-        return redirect()->back();
+        //
     }
 
     /**
@@ -86,7 +87,6 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        Category::find($id)->delete();
-        return 'success';
+        //
     }
 }

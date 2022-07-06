@@ -15,4 +15,9 @@ class Comments extends Model
     {
         return $this->belongsToMany(Posts::class);
     }
+
+    public function subcomments()
+    {
+        return $this->hasMany(SubComments::class, 'comment_id');
+    }
 }

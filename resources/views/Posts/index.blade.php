@@ -26,7 +26,8 @@
                     <div class="modal-body">
                         <form action="{{route('post.store')}}" method="post" enctype="multipart/form-data">
                             @csrf
-                            <input type="hidden" name="user_id" value="{{\Illuminate\Support\Facades\Auth::user()->id}}">
+                            <input type="hidden" name="user_id"
+                                   value="{{\Illuminate\Support\Facades\Auth::user()->id}}">
                             <div class="form-group">
                                 <label for="recipient-name" class="col-form-label">Post Name:</label>
                                 <select name="categoryId" id="">
@@ -48,8 +49,8 @@
                             <div class="form-group">
                                 <div class="custom-file">
                                     <input type="file" name="postImage">
-{{--                                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="postImage">--}}
-{{--                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>--}}
+                                    {{--                                    <input type="file" class="custom-file-input" id="inputGroupFile01" name="postImage">--}}
+                                    {{--                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>--}}
                                     @error('image')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
@@ -132,10 +133,88 @@
             @foreach($posts as $post)
                 <tr>
                     <td>{{$post->id}}</td>
-                    <td><img class="card-img-top" src="{{asset('storage/images/'.$post->category->id .'/'. $post->image) }}"
+                    <td><img class="card-img-top"
+                             src="{{asset('storage/images/'.$post->category->id .'/'. $post->image) }}"
                              alt="Card image cap"
                              style="width: 50px;height: 50px;"></td>
-                    <td>{{$post->category->title}}</td>
+                    <td>{{$post->category->title}}
+
+                        <i class="bi bi-plus-circle categoryUpdate" style="float:right;cursor: pointer"
+                           data-toggle="modal" data-id="{{$post->category->id}}" data-val="{{$post->category->title}}"
+                        data-target="#exampleModal3"></i>
+
+
+
+
+{{--////harcakan xi kategorian chi stanum--}}
+
+
+
+
+                        <div>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        <p>You have a error</p>
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{route('category.update',$post->category->id)}}" method="post"
+                                                  enctype="multipart/form-data">
+                                                @csrf
+                                                @method('put')
+                                                <div class="form-group">
+                                                    <label for="recipient-name">category Title:</label>
+                                                    <input type="text" class="form-control" id="categoryTitle" name="title" value="">
+                                                    @error('title')
+                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="hidden" name="categoryId" id="categoryId">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Update category</button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </td>
                     <td>
                         <ul class="demo">
                             @foreach($post->tags as $tag)
@@ -148,7 +227,8 @@
 
                             @endforeach
                         </ul>
-                        <i class="bi bi-plus-circle tagAdd" style="float:right;cursor: pointer" data-toggle="modal" data-id="{{$post->id}}"
+                        <i class="bi bi-plus-circle tagAdd" style="float:right;cursor: pointer" data-toggle="modal"
+                           data-id="{{$post->id}}"
                            data-target="#exampleModal2"></i>
 
                     </td>
@@ -223,7 +303,49 @@
         </div>
     </div>
 
+    <div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    <p>You have a error</p>
+                </ul>
+            </div>
+        @endif
 
+        <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{route('category.update',$post->category->id)}}" method="post"
+                              enctype="multipart/form-data">
+                            @csrf
+                            @method('put')
+                            <div class="form-group">
+                                <label for="recipient-name">category Title:</label>
+                                <input type="text" class="form-control" id="categoryTitle" name="title" value="">
+                                @error('title')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="categoryId" id="categoryId">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update category</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
     <style>
         .demo {
@@ -244,10 +366,19 @@
         $(document).ready(function () {
             $('#example').DataTable();
 
-            $(".tagAdd").click(function(){
+            $(".tagAdd").click(function () {
                 let id = $(this).attr('data-id');
-                console.log(id,$("#postId"))
+                console.log(id, $("#postId"))
                 $("#postId").val(id)
+            })
+            $(".categoryUpdate").click(function () {
+                let id = $(this).attr('data-id');
+                let val = $(this).data('val');
+                $("#categoryId").val(id);
+                $("#categoryTitle").val(val);
+                console.log(val);
+
+
             })
         });
 

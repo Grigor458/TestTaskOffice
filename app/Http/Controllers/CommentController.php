@@ -23,9 +23,6 @@ class CommentController extends Controller
 
         return view('Comments.index',compact('posts','comments'));
 
-//        return view('Comments.index', [
-//            'comments' => DB::table('comments')->paginate(5)
-//        ], compact('posts'));
     }
     /**
      * Store a newly created resource in storage.

@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SubCommentsController;
 use App\Http\Controllers\TagController;
 use App\Models\Posts;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +31,8 @@ Route::middleware(['auth'])->group(function () {
         'category' => CategoryController::class,
         'post' => PostController::class,
         'tag' => TagController::class,
-        'comment' => CommentController::class
+        'comment' => CommentController::class,
+        'subcomment' => SubCommentsController::class
     ]);
     //rsursi hamar ete methodner kan vor chen ogtagorcvum gri kam only kam except
 
