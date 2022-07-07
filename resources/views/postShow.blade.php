@@ -165,7 +165,6 @@
                                                 <div>
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <p class="mb-1">
-                                                            <span class="small">- 2 hours ago</span></p>
                                                         <span class="small demo" style="cursor:pointer;"
                                                               data-value="{{$comment->id}}" data-toggle="modal"
                                                               data-target="#exampleModal"> Reply</span>
@@ -264,10 +263,6 @@
     </div>
 
 
-
-
-
-
     <style>
         body {
             margin-top: 20px;
@@ -356,5 +351,6 @@
                 $("#commentID").val(id)
             })
         })
+
     </script>
 @endsection

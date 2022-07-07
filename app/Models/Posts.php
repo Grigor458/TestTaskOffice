@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Overtrue\LaravelFollow\Traits\CanBeLiked;
 
 class Posts extends Model
 {
-    use HasFactory;
+    use HasFactory, CanBeLiked;
 
     protected $fillable = ['category_id', 'user_id', 'title', 'image'];
 
@@ -18,11 +19,16 @@ class Posts extends Model
 
     public function tags()
     {
-        return $this->hasMany(Tags::class,'post_id');
+        return $this->hasMany(Tags::class, 'post_id');
     }
 
     public function comments()
     {
-        return $this->hasMany(Comments::class,'post_id');
+        return $this->hasMany(Comments::class, 'post_id');
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Likes::class, 'post_id');
     }
 }
