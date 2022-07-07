@@ -27,18 +27,11 @@
                     @endif
 
                     <div style="display: flex">
-                        <span  class="likeOrDisslike" data-postId="{{$post->id}}"
-                           data-userId="{{\Illuminate\Support\Facades\Auth::user()->id}}"
-                           data-value="1">like
-                            {{-- <span data-postId="{{$post->id}}"
-                                   data-userId="{{\Illuminate\Support\Facades\Auth::user()->id}}"
-                                   data-value="1">like</span>--}}</span>
                         <span class="likeOrDisslike" data-postId="{{$post->id}}"
-                           data-userId="{{\Illuminate\Support\Facades\Auth::user()->id}}"
-                           data-value="0">Dislike
-                            {{-- <span class="likeOrDisslike" data-postId="{{$post->id}}"
-                                   data-userId="{{\Illuminate\Support\Facades\Auth::user()->id}}"
-                                   data-value="0">Dislike</span>--}}
+                              data-userId="{{\Illuminate\Support\Facades\Auth::user()->id}}">Like</span>
+                        <span class="likeOrDisslike" data-postId="{{$post->id}}"
+                              data-userId="{{\Illuminate\Support\Facades\Auth::user()->id}}">Dislike
+
                         </span>
                     </div>
                 </div>
@@ -55,15 +48,19 @@
 
     <script>
         $(document).ready(function () {
+
+
             $('.likeOrDisslike').on('click', function () {
-           /*     var isLike = event.target.previousElementSibling == null;
-                event.preventDefault();
-                $.ajax({
-                    method: 'POST',
-                    url: '/likeOrDisslike',
-                    data: {isLike: isLike,postId}
-                })
-                console.log(isLike);*/
+
+                var isActive = true;
+
+                if (isActive = true) {
+                    $(this).attr('data-value', 1)
+                    isActive = false;
+                } else {
+                    $(this).attr('data-value', '')
+                }
+
                 let userId;
                 let postId;
                 var val;
