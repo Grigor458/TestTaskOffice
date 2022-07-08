@@ -28,9 +28,12 @@
 
                     <div style="display: flex">
                         <span class="likeOrDisslike" data-postId="{{$post->id}}"
-                              data-userId="{{\Illuminate\Support\Facades\Auth::user()->id}}" data-value="1" status="active">Like</span>
+                              data-userId="{{Auth::user() ? Auth::user()->id : 'chka'}}"
+                              {{ $post->isAuthUserLikedPost() ? "status="."active": ' ' }} data-value="1">Like</span>
                         <span class="likeOrDisslike" data-postId="{{$post->id}}"
-                              data-userId="{{\Illuminate\Support\Facades\Auth::user()->id}}" data-value="0">Dislike
+                              {{ $post->isAuthUserDissLikedPost() ? "status="."active": ' ' }}
+                              data-userId="{{Auth::user() ? Auth::user()->id : 'chka'}}"
+                              data-value="0">Dislike
 
                         </span>
                     </div>
@@ -44,25 +47,33 @@
 
     </div>
 
-
-
+    <style>
+        .likeOrDisslike[status="active"] {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
     <script>
         $(document).ready(function () {
-
-
             $('.likeOrDisslike').on('click', function () {
-
-
                 let userId;
                 let postId;
                 var val;
+                var status;
                 userId = $(this).attr('data-userId');
                 postId = $(this).attr('data-postId');
                 val = $(this).attr('data-value');
+                status = $(this).attr('status');
 
                 var attr = $(this).attr('status');
+
+
+                $(this).toggleClass("likeOrDisslike");
                 if (typeof attr !== typeof undefined && attr !== false) {
-                    alert(56456)
+                    $(this).removeAttr('status');
+                } else {
+                    $(this).attr('status', 'active')
+                    // $(this).attr('data-value', '1')
                 }
 
                 $.ajax({
@@ -71,16 +82,17 @@
                     },
                     type: "post",
                     url: '/likeOrDisslike',
-                    data: {userId: userId, postId: postId, val: val},
+                    data: {userId: userId, postId: postId, val: val, status: status},
                     success: function ($data) {
                         console.log($data);
+                        $("#likeOrDisslike").load("index.blade.php");
                         if ($data) {
+
                             // location.reload(true);
                         }
                     },
                 });
 
-                $(this).attr('status', 'active')
             })
         })
     </script>

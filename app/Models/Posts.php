@@ -31,4 +31,20 @@ class Posts extends Model
     {
         return $this->hasMany(Likes::class, 'post_id');
     }
+
+    public function isAuthUserLikedPost()
+    {
+        return $this->likes()
+            ->where('user_id', auth()->id())
+            ->where('is_liked', 1)
+            ->first();
+    }
+
+    public function isAuthUserDissLikedPost()
+    {
+        return $this->likes()
+            ->where('user_id', auth()->id())
+            ->where('is_liked', 0)
+            ->first();
+    }
 }

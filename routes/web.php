@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-Route::post('likeOrDisslike',  [PostController::class, 'likeOrDisslike'])->name('likeOrDisslike');
+Route::post('likeOrDisslike',  [HomeController::class, 'likeOrDisslike'])->name('likeOrDisslike');
 Auth::routes();
 
 

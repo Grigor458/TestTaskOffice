@@ -135,53 +135,5 @@ class PostController extends Controller
         return 'success';
     }
 
-    public function likeOrDisslike(Request $request)
-    {
-        /*$post_id = $request->postId;
-        $is_like = $request->val === 'true';
-        $update = false;
-        $post = Posts::find($post_id);
-        if (!$post) {
-            return null;
-        }
-        $user = Auth::user();
-        $like = $user->likes()->where('post_id', $post_id)->first();
-        if ($like) {
-            $already_like = $like->is_liked;
-            $update = true;
-            if ($already_like == $is_like) {
-                $like->delete();
-                return null;
-            }
-        } else {
-            $like = new Likes();
-        }
-        $like->like = $is_like;
-        $like->user_id = $user->id;
-        $like->post_id = $post->id;
-        if ($update) {
-            $like->update();
-        } else {
-            $like->save();
-        }
-        return null;*/
 
-
-        $post = Likes::firstOrCreate(
-            ['user_id' => $request->userId, 'post_id' => $request->postId, 'is_liked' => $request->val],
-            ['user_id' => $request->userId, 'post_id' => $request->postId, 'is_liked' => $request->val]
-        );
-
-            if ($post && ($post->is_liked == $request->val)) {
-                $post->delete();
-                return 'deleted';
-            } else {
-                Likes::updateOrCreate(
-                    ['user_id' => $request->userId, 'post_id' => $request->postId],
-                    ['is_liked' => $request->val]
-                );
-            }
-        return 'success';
-
-    }
 }
