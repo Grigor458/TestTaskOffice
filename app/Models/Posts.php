@@ -8,7 +8,7 @@ use Overtrue\LaravelFollow\Traits\CanBeLiked;
 
 class Posts extends Model
 {
-    use HasFactory, CanBeLiked;
+    use HasFactory;
 
     protected $fillable = ['category_id', 'user_id', 'title', 'image'];
 

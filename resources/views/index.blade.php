@@ -28,9 +28,9 @@
 
                     <div style="display: flex">
                         <span class="likeOrDisslike" data-postId="{{$post->id}}"
-                              data-userId="{{\Illuminate\Support\Facades\Auth::user()->id}}">Like</span>
+                              data-userId="{{\Illuminate\Support\Facades\Auth::user()->id}}" data-value="1" status="active">Like</span>
                         <span class="likeOrDisslike" data-postId="{{$post->id}}"
-                              data-userId="{{\Illuminate\Support\Facades\Auth::user()->id}}">Dislike
+                              data-userId="{{\Illuminate\Support\Facades\Auth::user()->id}}" data-value="0">Dislike
 
                         </span>
                     </div>
@@ -52,14 +52,6 @@
 
             $('.likeOrDisslike').on('click', function () {
 
-                var isActive = true;
-
-                if (isActive = true) {
-                    $(this).attr('data-value', 1)
-                    isActive = false;
-                } else {
-                    $(this).attr('data-value', '')
-                }
 
                 let userId;
                 let postId;
@@ -67,6 +59,12 @@
                 userId = $(this).attr('data-userId');
                 postId = $(this).attr('data-postId');
                 val = $(this).attr('data-value');
+
+                var attr = $(this).attr('status');
+                if (typeof attr !== typeof undefined && attr !== false) {
+                    alert(56456)
+                }
+
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -81,6 +79,8 @@
                         }
                     },
                 });
+
+                $(this).attr('status', 'active')
             })
         })
     </script>
