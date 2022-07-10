@@ -116,15 +116,30 @@ class PostController extends Controller
     }
 
 
+    public function searchAll($data)
+    {
+        $posts = Posts::where('title', 'like', '%' . $data . '%')->get();
+        return response()->json($posts);;
+    }
+
+
     public function getPostByTags($data)
     {
         $posts = Posts::whereHas('tags', function ($query) use ($data) {
-            $query->where('title', $data);
+            $query->whereTitle($data);
         })->get();
 
         return response()->json($posts);
     }
 
+    public function getPostByCategory($data)
+    {
+        $posts = Posts::whereHas('category', function ($query) use ($data) {
+            $query->whereTitle($data);
+        })->get();
+
+        return response()->json($posts);
+    }
 
     public function updatePostsCategory(Request $request)
     {

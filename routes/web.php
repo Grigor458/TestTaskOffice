@@ -39,6 +39,8 @@ Route::middleware(['auth'])->group(function () {
     //rsursi hamar ete methodner kan vor chen ogtagorcvum gri kam only kam except
 
     Route::get('getPostByTags/{data}', [PostController::class, 'getPostByTags'])->name('getPostByTags');
+    Route::get('getPostByCategory/{data}', [PostController::class, 'getPostByCategory'])->name('getPostByCategory');
+    Route::get('searchAll/{data}', [PostController::class, 'searchAll'])->name('searchAll');
     Route::post('updatePostsCategory', [PostController::class, 'updatePostsCategory'])->name('updatePostsCategory');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 

@@ -1,10 +1,40 @@
 @extends('welcome')
 
 @section('posts')
-    <div>
+
+    <div class="col-md-4">
+        <div class="input-group">
+            <input type="search" class="form-control rounded searchAll" placeholder="Search" aria-label="Search"
+                   aria-describedby="search-addon"/>
+            <button type="button" class="btn btn-outline-primary">search</button>
+        </div>
+    </div>
+    <div style="margin-top: 50px">
+
+
+        <div style="width: 20%;left: 0;display:inline-block;background: white;z-index: 555">
+            <div>
+                <ul>
+                    Category
+                    @foreach($categories as $category)
+                        <li value="{{$category->id}}" class="list-group-item category_name"
+                            style="cursor: pointer">{{$category->title}}</li>
+                    @endforeach
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    Tags
+                    @foreach($tags as $tag)
+                        <li class="list-group-item tags_name" data-value="{{$tag->title}}">   {{ $tag->title }}</li>
+                    @endforeach
+                </ul>
+            </div>
+
+        </div>
 
         <div class="card-group" style="display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 10px;">
 
 
@@ -94,6 +124,35 @@
                 });
 
             })
+
+
+            $('.searchAll').keypress(function (event) {
+                var value = $(this).val();
+
+
+                if (value.length >= 3) {
+
+
+                    $.get("searchAll/" + value, function (data) {
+                        console.log(data);
+                    });
+
+                }
+            })
+
+
+            $('.tags_name').on('click', function () {
+                $.get("getPostByTags/" + $(this).data('value'), function (data) {
+                    console.log(data);
+                });
+            });
+
+            $('.category_name').on('click', function () {
+                $.get("getPostByCategory/" + $(this).data('value'), function( data ) {
+                    console.log(data);
+                });
+            });
+
         })
     </script>
 @endsection

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Likes;
 use App\Models\Posts;
+use App\Models\Tags;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -31,7 +33,9 @@ class HomeController extends Controller
     public function homepage()
     {
         $posts = Posts::withCount('tags', 'comments', 'likes')->get();
-        return view('index', compact('posts'));
+        $tags = Tags::all();
+        $categories = Category::all();
+        return view('index', compact('posts', 'tags', 'categories'));
     }
 
     public function likeOrDisslike(Request $request)
