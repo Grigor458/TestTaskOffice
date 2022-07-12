@@ -108,19 +108,19 @@
                     <td>
                         <ul class="demo">
                             @foreach($post->tags as $tag)
-                                <li>{{$tag->title}}
-                                    <span>
-                                        <i class="bi bi-x-lg tagRemove" style="cursor:pointer;"
-                                           data-value="{{$tag->id}}"></i>
-                                    </span>
-                                </li>
 
+                                <li>{{$tag->tag_title}}
+                                    <span>
+                                                                    <i class="bi bi-x-lg tagRemove"
+                                                                       style="cursor:pointer;"
+                                                                       data-value="{{$tag->id}}"></i>
+                                                                </span>
+                                </li>
                             @endforeach
                         </ul>
                         <i class="bi bi-plus-circle tagAdd" style="float:right;cursor: pointer" data-toggle="modal"
                            data-id="{{$post->id}}"
                            data-target="#exampleModal2"></i>
-
                     </td>
                     <td>{{$post->user_id}}</td>
                     <td>{{$post->id}}</td>
@@ -159,7 +159,6 @@
                 </ul>
             </div>
         @endif
-
         <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -228,7 +227,6 @@
 
             $(".tagAdd").click(function () {
                 let id = $(this).attr('data-id');
-                console.log(id, $("#postId"))
                 $("#postId").val(id)
             })
             $(".categoryUpdate").click(function () {
@@ -236,7 +234,6 @@
                 let val = $(this).data('val');
                 $("#categoryId").val(id);
                 $("#categoryTitle").val(val);
-                console.log(val);
             })
 
 

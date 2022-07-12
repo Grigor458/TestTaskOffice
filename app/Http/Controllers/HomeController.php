@@ -32,7 +32,7 @@ class HomeController extends Controller
 
     public function homepage()
     {
-        $posts = Posts::withCount('tags', 'comments', 'likes')->get();
+        $posts = Posts::withCount('comments', 'likes')->get();
         $tags = Tags::all();
         $categories = Category::all();
         return view('index', compact('posts', 'tags', 'categories'));

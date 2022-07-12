@@ -83,8 +83,6 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
-        dd($request->all());
-        //VALIDACIA
         $post = Posts::find($id);
 
         if ($request->file('image')) {
@@ -126,18 +124,15 @@ class PostController extends Controller
     public function getPostByTags($data)
     {
         $posts = Posts::whereHas('tags', function ($query) use ($data) {
-            $query->whereTitle($data);
+            $query->where('tag_id', $data);
         })->get();
-
-        return response()->json($posts);
+        return json_encode($posts);
+//        return response()->json($posts);
     }
 
     public function getPostByCategory($data)
     {
-        $posts = Posts::whereHas('category', function ($query) use ($data) {
-            $query->whereTitle($data);
-        })->get();
-
+        $posts = Posts::where('category_id', $data)->get();
         return response()->json($posts);
     }
 
@@ -148,6 +143,21 @@ class PostController extends Controller
             'category_id' => $request->categoryId
         ]);
         return 'success';
+    }
+
+    public function getPostsByFilter(Request $request)
+    {
+      /*  $users = DB::table('posts')
+            ->join('categories', 'id', '=', 'posts.category_id')
+            ->join('posts_tags', 'post_id', '=', 'posts.id')
+            ->select('posts.*')
+            ->where('')
+
+
+        $data = $request->tag_id;
+        $posts = Posts::where('category_id', $request->category_id)->get();
+
+        dd($posts);*/
     }
 
 

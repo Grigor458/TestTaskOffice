@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TagStoreRequest;
 use App\Models\Posts;
+use App\Models\PostsTags;
 use App\Models\Tags;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,7 @@ class TagController extends Controller
     public function index()
     {
         $posts = Posts::all();
-        $tags=Tags::paginate(5);
+        $tags = Tags::paginate(5);
         return view('Tags.index', compact('posts', 'tags'));
 
     }
@@ -31,10 +32,15 @@ class TagController extends Controller
      */
     public function store(TagStoreRequest $request)
     {
-        $tag = Tags::create([
-            'post_id' => $request->postId,
-            'title' => $request->title,
+        $tag = Tags::firstOrCreate([
+            'tag_title' => $request->title,
         ]);
+        if ($tag) {
+            PostsTags::create([
+                'post_id' => $request->postId,
+                'tag_id' => $tag->id
+            ]);
+        }
         return redirect()->back();
     }
 

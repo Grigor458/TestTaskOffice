@@ -13,27 +13,66 @@
 
 
         <div style="width: 20%;left: 0;display:inline-block;background: white;z-index: 555">
-            <div>
-                <ul>
-                    Category
-                    @foreach($categories as $category)
-                        <li value="{{$category->id}}" class="list-group-item category_name"
-                            style="cursor: pointer">{{$category->title}}</li>
-                    @endforeach
-                </ul>
-            </div>
-            <div>
-                <ul>
-                    Tags
-                    @foreach($tags as $tag)
-                        <li class="list-group-item tags_name" data-value="{{$tag->title}}">   {{ $tag->title }}</li>
-                    @endforeach
-                </ul>
-            </div>
+            <form action="{{route('getPostsByFilter')}}" method="get">
+
+                <div>
+                    <ul>
+                        Category
+                        @foreach($categories as $category)
+
+                            <div class="form-check">
+
+                                <input
+                                    name="category_id[]" type="checkbox" value="{{ $category->id }}"
+                                    @if (in_array($category->id, explode(',', request()->input('filter.category'))))
+                                        checked
+                                    @endif
+                                >
+{{--                                <input class="form-check-input category_name" type="checkbox"--}}
+{{--                                       data-value="{{$category->id}}"--}}
+{{--                                       id="flexCheckDefault{{$category->id}}" name="category_id">--}}
+                                <label class="form-check-label"
+                                       for="flexCheckDefault{{$category->id}}">{{$category->title}}  </label>
+                            </div>
+
+                        @endforeach
+                    </ul>
+                </div>
+                <div>
+                    <ul>
+                        Tags
+                        @foreach($tags as $tag)
+
+                            <div class="form-check">
+                                <input
+                                    name="tag_id[]" type="checkbox" value="{{ $tag->id }}"
+                                    @if (in_array($tag->id, explode(',', request()->input('filter.tag'))))
+                                        checked
+                                    @endif
+                                >
+
+
+                                {{--                                <input class="form-check-input tags_name" type="checkbox"--}}
+                                {{--                                       id="flexCheckDefault{{$tag->id}}" value="{{$tag->id}}">--}}
+                                {{--                                <input type="hidden" value="{{$tag->id}}" id="flexCheckDefault{{$tag->id}}" name="tag_id">--}}
+                                <label class="form-check-label"
+                                       for="flexCheckDefault{{$tag->id}}">{{ $tag->tag_title }}  </label>
+                            </div>
+                            {{--<li class="list-group-item tags_name" data-value="{{$tag->id}}">
+
+                            </li>--}}
+                        @endforeach
+                    </ul>
+                </div>
+
+                <button type="submit">Search</button>
+            </form>
 
         </div>
+        <div id="demo" style="position: absolute">--}}
 
-        <div class="card-group" style="display: grid;
+        </div>
+        <div class="card-group demo" style="display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;">
 
@@ -128,28 +167,33 @@
 
             $('.searchAll').keypress(function (event) {
                 var value = $(this).val();
-
-
                 if (value.length >= 3) {
-
-
                     $.get("searchAll/" + value, function (data) {
                         console.log(data);
                     });
-
                 }
             })
 
 
             $('.tags_name').on('click', function () {
-                $.get("getPostByTags/" + $(this).data('value'), function (data) {
-                    console.log(data);
-                });
+
+                if ($(this).is(':checked')) {
+                    $(this).attr('value', 'true');
+                    $.get("getPostByTags/" + $(this).data('value'), function (data) {
+                        console.log(data);
+                        $('#demo').html(data);
+                    });
+                } else {
+                    $(this).attr('value', 'false');
+                    console.log(55555555);
+                }
+
             });
 
             $('.category_name').on('click', function () {
-                $.get("getPostByCategory/" + $(this).data('value'), function( data ) {
+                $.get("getPostByCategory/" + $(this).data('value'), function (data) {
                     console.log(data);
+                    $('#demo').html(data);
                 });
             });
 

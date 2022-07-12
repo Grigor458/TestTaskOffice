@@ -19,7 +19,7 @@ class Posts extends Model
 
     public function tags()
     {
-        return $this->hasMany(Tags::class, 'post_id');
+        return $this->belongsToMany(Tags::class, 'posts_tags', 'post_id', 'tag_id');
     }
 
     public function comments()

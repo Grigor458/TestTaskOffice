@@ -28,14 +28,14 @@
 
                             <div class="form-group">
                                 <label for="recipient-name" class="col-form-label">Post Name:</label>
-                                <select name="postId" id="">
-                                    @foreach($posts as $post)
-                                        <option value="{{$post->id}}">{{$post->title}}</option>
-                                    @endforeach
-                                </select>
-                                @error('post_id')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
+{{--                                <select name="postId" id="">--}}
+{{--                                    @foreach($posts as $post)--}}
+{{--                                        <option value="{{$post->id}}">{{$post->title}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                                @error('post_id')--}}
+{{--                                <div class="alert alert-danger">{{ $message }}</div>--}}
+{{--                                @enderror--}}
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" >Tag Title:</label>
@@ -59,8 +59,7 @@
 
     <ul class="list-group">
         @foreach ($tags as $tag)
-            <span>Post Id - {{$tag->post_id}}    </span>
-            <li class="list-group-item tags_name" data-value="{{$tag->title}}">   {{ $tag->title }}</li>
+            <li class="list-group-item tags_name" data-value="{{$tag->tag_title}}">   {{ $tag->tag_title }}</li>
         @endforeach
     </ul>
 
