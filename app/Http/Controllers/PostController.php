@@ -154,9 +154,9 @@ class PostController extends Controller
             $query->where('category_id', $request->category_id);
         })
             ->when($request->has('tag_id'), function ($query) use ($request) {
-                $query->with(['tags' => function ($q) use ($request) {
+                $query->whereHas('tags', function ($q) use ($request) {
                     $q->where('tag_id', $request->tag_id);
-                }]);
+                });
             })->get();
 
         dd($posts);
