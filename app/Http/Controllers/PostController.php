@@ -8,6 +8,7 @@ use App\Models\Likes;
 use App\Models\Posts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
@@ -147,17 +148,30 @@ class PostController extends Controller
 
     public function getPostsByFilter(Request $request)
     {
-      /*  $users = DB::table('posts')
-            ->join('categories', 'id', '=', 'posts.category_id')
-            ->join('posts_tags', 'post_id', '=', 'posts.id')
-            ->select('posts.*')
-            ->where('')
+
+        $posts = Posts::
+        when($request->has('category_id'), function ($query) use ($request) {
+            $query->where('category_id', $request->category_id);
+        })
+            ->when($request->has('tag_id'), function ($query) use ($request) {
+                $query->with(['tags' => function ($q) use ($request) {
+                    $q->where('tag_id', $request->tag_id);
+                }]);
+            })->get();
+
+        dd($posts);
+
+        /*  $users = DB::table('posts')
+              ->join('categories', 'id', '=', 'posts.category_id')
+              ->join('posts_tags', 'post_id', '=', 'posts.id')
+              ->select('posts.*')
+              ->where('')
 
 
-        $data = $request->tag_id;
-        $posts = Posts::where('category_id', $request->category_id)->get();
+          $data = $request->tag_id;
+          $posts = Posts::where('category_id', $request->category_id)->get();
 
-        dd($posts);*/
+          dd($posts);*/
     }
 
 
